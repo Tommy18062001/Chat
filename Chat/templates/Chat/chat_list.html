@@ -1,0 +1,42 @@
+{% extends 'Account/home.html' %}
+
+{% block content %}
+{% for chat in mess %}
+
+    	<div class="chat bg-primary" style="width: 50%; border-radius: 40px; ">
+			<div class="ml-5" style="color: white;">
+					<p><b class="chat-content">{{ chat|linebreaks }}</b></p>
+				<small class="chat-date">Posted on {{ chat.posted_at }} by</small>
+			{% if chat.user.is_superuser %}
+
+
+    		    <small class="chat-user-special text-capitalize "> {{ chat.user }}- Admin </small>
+
+
+    		{% else %}
+
+						<small class="chat-user text-capitalize"> {{ chat.user }} </small>
+
+    		{% endif %}
+
+
+			</div>
+
+    	</div><br>
+
+    {% empty %}
+    <h1 class="heading">No Chats Yet Be The First To Message!</h1><br>
+
+    {% endfor %}
+
+<div class="fixed-bottom form-inline">
+	<form method="POST" action="{% url 'chat:new' %}">
+    	{% csrf_token %}
+		<input type="text" class="form-control ml-2 mr-2" style="width: 1000px;" name="message" placeholder="Write a message">
+    	<input type="submit" value="Send" class="btn btn-lg btn-outline-primary">
+    </form>
+
+
+</div>
+{% endblock %}
+
